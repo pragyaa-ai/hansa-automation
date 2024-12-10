@@ -1,6 +1,9 @@
 import os
 import requests
 from pydub import AudioSegment
+import datetime
+today = datetime.date.today()
+folder_name = today.strftime("%Y-%m-%d")
 
 def download_audio(url, output_filename):
     print(f"Attempting to download audio from URL: {url}")
@@ -101,7 +104,7 @@ def process_transcripts(base_dir, output_dir):
                                     duration_file.write(f"Audio URL: {audio_url}\n")
                                     duration_file.write(f"Duration: {duration}\n")
                                 print(f"Duration information written to: {duration_file_path}")
-base_directory = "vlaudios/2024-12-06"
-output_directory = "duration/2024-12-06"
+base_directory = f"vlaudios/{folder_name}"
+output_directory = f"duration/{folder_name}"
 
 process_transcripts(base_directory, output_directory)

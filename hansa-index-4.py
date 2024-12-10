@@ -12,6 +12,7 @@ from pydub import AudioSegment
 from requests.auth import HTTPBasicAuth
 from mutagen.mp3 import MP3
 
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 INDEX = "hansa-varta-index-4"
@@ -23,6 +24,8 @@ update_url = f'https://{URL}:9200/{INDEX}/_update/'
 
 import requests
 from requests.auth import HTTPBasicAuth
+today = datetime.date.today()
+folder_name = today.strftime("%Y-%m-%d")
 
 def create_index():
     index_creation_url = f'https://{URL}:9200/{INDEX}'
@@ -500,7 +503,7 @@ def index_transcripts_from_folder(transcript_folder, eval_folder_path, duration_
             filename_from_url = extract_filename_from_url(audio_url)
             print(f"Final Audio File Name from URL: {filename_from_url}")
 
-            audio_file_path = os.path.join(duration_folder, f"downloaded_audio_{podcast_id}.mp3")  # Assuming audio files are in duration_folder
+            audio_file_path = os.path.join(duration_folder, f"downloaded_audio_{podcast_id}.mp3") 
             if not os.path.exists(audio_file_path):
                 print(f"Audio file not found for Podcast ID {podcast_id}. Skipping...")
                 continue
@@ -521,7 +524,7 @@ def delete_index():
         print(f"Error deleting index: {response.status_code}, Response: {response.text}")
 
 if __name__ == "__main__":
-    for folders in ['2024-12-06'] : 
+    for folders in [f'{folder_name}'] : 
         transcript_folder = f"vlaudios/{folders}"
         eval_1 = f"new_prompt_eval_1/{folders}"
         summary_folder = f"transcript_summary/{folders}"

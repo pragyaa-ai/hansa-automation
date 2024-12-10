@@ -4,6 +4,10 @@ import json
 import re
 import time
 
+import datetime
+today = datetime.date.today()
+folder_name = today.strftime("%Y-%m-%d")
+
 prompt1 = """evaluate the given call transcript in point 1 below, based on the following ten parameters only mentioned in point 2 below (soft skills to be evaluated and criteria specified for each soft skill) and not for any other parameter. Provide the response in the format specified in point 3 only. 
     Soft skills to be evaluated:
         Parameter: 1. Greet & Call Opening: Meeting any of below criteria means this criteria is met
@@ -242,9 +246,9 @@ def process_files(input_directory, output_directory):
                 request_count = 0
 
 input_directories = [
-    "vlaudios/2024-12-10", 
+    f"vlaudios/{folder_name}", 
 ]
-output_directory_1 = "new_prompt_eval_1/2024-12-10"
+output_directory_1 = f"new_prompt_eval_1/{folder_name}"
 # output_directory_2 = "eval_transcript_2"
 
 for input_directory in input_directories:

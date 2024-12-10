@@ -11,6 +11,10 @@ You are given Transcription of an audio.
 Summarize this transcription based on it, and try to include important points in it. 
 The summary should be in 1 paragraph. 
 """
+import datetime
+
+today = datetime.date.today()
+folder_name = today.strftime("%Y-%m-%d")
 
 headers = {
     "Content-Type": "application/json",
@@ -88,7 +92,7 @@ def process_files(input_eng_dir, output_directory):
                 time.sleep(40)
                 request_count = 0
 
-input_eng_dir = "vlaudios/2024-12-10"
-output_directory = "transcript_summary/2024-12-10"
+input_eng_dir = f"vlaudios/{folder_name}"
+output_directory = f"transcript_summary/{folder_name}"
 
 process_files(input_eng_dir, output_directory)
