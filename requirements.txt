@@ -1,3 +1,5 @@
 requests
 pydub
 mutagen
+azure-storage-blob
+azure-cognitiveservices-speech
