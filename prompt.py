@@ -237,14 +237,14 @@ def process_files(input_directory, output_directory):
             
             request_count += 1
             if request_count > 3:
-                print("Waiting for 30 seconds to avoid hitting rate limits...")
-                time.sleep(30) 
+                print("Waiting for 40 seconds to avoid hitting rate limits...")
+                time.sleep(40) 
                 request_count = 0
 
 input_directories = [
-    "vlaudios/2024-12-06", 
+    "vlaudios/2024-12-10", 
 ]
-output_directory_1 = "new_prompt_eval_1/2024-12-06"
+output_directory_1 = "new_prompt_eval_1/2024-12-10"
 # output_directory_2 = "eval_transcript_2"
 
 for input_directory in input_directories:

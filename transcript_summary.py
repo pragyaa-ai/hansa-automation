@@ -84,11 +84,11 @@ def process_files(input_eng_dir, output_directory):
             
             request_count += 1
             if request_count > 3:
-                print("Waiting for 30 seconds to avoid hitting rate limits...")
-                time.sleep(30)
+                print("Waiting for 40 seconds to avoid hitting rate limits...")
+                time.sleep(40)
                 request_count = 0
 
-input_eng_dir = "vlaudios/2024-12-06"
-output_directory = "transcript_summary/2024-12-06"
+input_eng_dir = "vlaudios/2024-12-10"
+output_directory = "transcript_summary/2024-12-10"
 
 process_files(input_eng_dir, output_directory)
