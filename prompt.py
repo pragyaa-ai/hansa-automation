@@ -171,6 +171,11 @@ headers = {
     "Content-Type": "application/json",
     "api-key": key
 }
+import time
+import requests
+import re
+import json
+
 def evaluate_transcript(transcript, prompt):
     full_prompt = f"{prompt}\n{transcript}"
     payload = {
@@ -180,22 +185,29 @@ def evaluate_transcript(transcript, prompt):
         ]
     }
 
-    response = requests.post(endpoint, headers=headers, json=payload)
+    max_retries = 3
+    attempt = 0
 
-    
-    if response.status_code == 200:
-        response_data = response.json()
-        content = response_data['choices'][0]['message']['content']
-        
-        json_content = re.search(r'(\{.*\})', content, re.DOTALL)
+    while attempt < max_retries:
+        response = requests.post(endpoint, headers=headers, json=payload)
 
-        if json_content:
-            return json_content.group(1).strip()  
+        if response.status_code == 200:
+            response_data = response.json()
+            content = response_data['choices'][0]['message']['content']
+            
+            json_content = re.search(r'(\{.*\})', content, re.DOTALL)
+
+            if json_content:
+                return json_content.group(1).strip()  
+            else:
+                return json.dumps(content, indent=4) 
         else:
-            return json.dumps(content, indent=4) 
-    else:
-        print(f"Error {response.status_code}: {response.text}")
-        return None
+            print(f"Error {response.status_code}: {response.text}")
+            time.sleep(10)
+            attempt += 1 
+
+    print("Max retries reached. Unable to process the request.")
+    return None
 
 def check_if_already_processed(input_file, output_directory):
     output_filename = input_file.replace('.txt', '.json')
@@ -249,6 +261,7 @@ input_directories = [
     f"vlaudios/{folder_name}", 
 ]
 output_directory_1 = f"new_prompt_eval_1/{folder_name}"
+
 # output_directory_2 = "eval_transcript_2"
 
 for input_directory in input_directories:

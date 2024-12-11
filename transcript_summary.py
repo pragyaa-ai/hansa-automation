@@ -22,6 +22,9 @@ headers = {
 }
 
 def summarize_transcript(english_transcript, prompt):
+    max_retries = 3
+    attempt = 0
+
     full_prompt = f"{prompt}\n Transcription: {english_transcript}\n\n Summary : "
 
     payload = {
@@ -30,19 +33,20 @@ def summarize_transcript(english_transcript, prompt):
             {"role": "user", "content": full_prompt}
         ]
     }
+    while attempt < max_retries:
+        response = requests.post(endpoint, headers=headers, json=payload)
 
-    response = requests.post(endpoint, headers=headers, json=payload)
-
-    if response.status_code == 200:
-        response_data = response.json()
-        content = response_data['choices'][0]['message']['content']
-        if content:
-            return content
+        if response.status_code == 200:
+            response_data = response.json()
+            content = response_data['choices'][0]['message']['content']
+            if content:
+                return content
+            else:
+                return json.dumps(content, indent=4)
         else:
-            return json.dumps(content, indent=4)
-    else:
-        print(f"Error {response.status_code}: {response.text}")
-        return None
+            print(f"Error {response.status_code}: {response.text}")
+            time.sleep(10)
+            attempt += 1 
 
 def check_if_already_processed(input_file, output_directory):
     relative_path = os.path.relpath(input_file, input_eng_dir)
